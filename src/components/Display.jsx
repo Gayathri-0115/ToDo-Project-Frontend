@@ -13,7 +13,7 @@ function Display() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+       const data = await response.json();
         setalldata(data);
         console.log(data);
       } catch (error) {
@@ -94,7 +94,7 @@ function Display() {
                 type="text"
                 value={editTask}
                 onChange={(e) => setEditTask(e.target.value)}
-                className="w-200 bg-white p-1 rounded text-blue-700 font-bold"
+                className="w-200 max-lg:w-120 max-md:w-100 max-sm:w-45 bg-white p-1 rounded placeholder-blue-700 text-blue-800 font-bold"
               />
             ) : (
               <h1 className="w-200 max-lg:w-120 max-md:w-100 max-sm:w-45 bg-white p-1 rounded text-blue-700 font-bold">
