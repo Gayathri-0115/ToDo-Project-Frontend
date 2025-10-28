@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import './Display.css'; 
 
 function Display() {
   const [alldata, setalldata] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editId, setEditId] = useState(null);      
   const [editTask, setEditTask] = useState("");    
 
@@ -15,6 +17,7 @@ function Display() {
 
        const data = await response.json();
         setalldata(data);
+        setLoading(false); 
         console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -80,6 +83,13 @@ function Display() {
       console.error("Error updating data:", error);
     }
   };
+   if (loading) {
+    return (
+      <div className="loader">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2">
