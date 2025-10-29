@@ -1,45 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 function Add() {
-    const [Task, setTask] = useState('')
+  const [Task, setTask] = useState('');
 
-    const addTask = async () => {
-        try {
-            const response = await fetch(import.meta.env.VITE_API_URL+"add", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ NameofTheTask: Task }),
-            });
+  const addTask = async () => {
+    if (!Task.trim()) {
+      alert('Please enter a task before adding.');
+      return;
+    }
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ NameofTheTask: Task }),
+      });
 
-            console.log("Task added:", Task);
-            location.reload(); // refresh the whole web page
-        } catch (error) {
-            console.error("Error adding task:", error);
-        }
-    };
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
+      console.log("Task added:", Task);
+      setTask(""); // Clear input
+      location.reload(); // reload for simplicity (you can improve with state update)
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
 
-    return (
-        <div>
-            <div className="container bg-blue-300 flex mx-auto my-2  p-3 justify-around rounded">
+  return (
+    <div className="bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 py-6">
+      <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <input
+          type="text"
+          className="flex-1 w-full sm:w-auto border border-blue-300 focus:ring-2 focus:ring-blue-500 rounded-xl px-3 py-2 text-blue-800 placeholder-blue-400 font-semibold transition-all duration-300"
+          placeholder="Enter a task..."
+          value={Task}
+          onChange={(e) => setTask(e.target.value)}
+        />
 
-                <div>
-                    <input type="text" className='w-200 max-lg:w-120 max-md:w-100 max-sm:w-45 bg-white p-1 rounded placeholder-blue-700 text-blue-800 font-bold' placeholder='Enter Task...' onChange={(e) => setTask(e.target.value)} />
-                </div>
-
-                <div>
-                    <button onClick={() => { addTask() }} className='bg-white text-blue-500 p-1 rounded cursor-pointer hover:bg-blue-500 hover:text-white font-bold shadow-sm' >
-                        Add Task</button>
-                </div>
-            </div>
-        </div>
-    )
+        <button
+          onClick={addTask}
+          className="mt-2 sm:mt-0 bg-blue-500 text-white font-bold px-4 py-2 cursor-pointer rounded-xl shadow-md hover:bg-blue-600 transition duration-300 transform hover:scale-105"
+        >
+          ➕ Add Task
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default Add
+export default Add;
